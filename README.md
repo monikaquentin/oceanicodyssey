@@ -1,6 +1,6 @@
 # OceanicOdyssey | NodeJS-18.x
 
-This project contains source code and supporting files for a serverless application (a piece from Twin Roses Back-End) that you can deploy with the SAM CLI. It includes the following files and folders.
+This project contains source code and supporting files for a serverless application (a piece from Twin Rose Back-End) that you can deploy with the SAM CLI. It includes the following files and folders.
 
 ```
 oceanicodyssey

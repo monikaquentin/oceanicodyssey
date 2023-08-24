@@ -1,7 +1,7 @@
 {
   "name": "oceanic_odyssey",
   "version": "1.0.0",
-  "description": "OceanicOdyssey [NodeJS-18.x Serverless Application Model] A piece from Twin Roses Back-End",
+  "description": "OceanicOdyssey [NodeJS-18.x Serverless Application Model] A piece from Twin Rose Back-End",
   "main": "./bin/functions/index/index.mjs",
   "type": "module",
   "private": false,

@@ -13,7 +13,7 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
     OceanicOdyssey [NodeJS-18.x Serverless Application Model]
-    A piece from Twin Roses Back-End
+    A piece from Twin Rose Back-End
 
 Globals:
     Function:
