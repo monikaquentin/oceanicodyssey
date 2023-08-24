@@ -39,38 +39,18 @@ oceanicodyssey
 │       ├── .env.json
 ```
 
-## Application deployment
+## Requirements
 
-The Serverless Application Model Command Line Interface (SAM CLI) is an extension of the AWS CLI that adds functionality for building and testing Lambda applications. It uses Docker to run your functions in an Amazon Linux environment that matches Lambda. It can also emulate your application's build environment and API.
+-   [AWS CLI](https://aws.amazon.com/cli) already configured with Administrator permission.
+-   [SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html) installed - minimum `v1.94.0` (sam --version).
+-   [NodeJS](https://nodejs.org/en) `>= v18.17.1`, including the NPM package management tool `>= v9.8.1`.
+-   [Docker](https://hub.docker.com/search/?type=edition&offering=community) - Community Edition.
 
-To use the SAM CLI, you need the following tools.
-
--   SAM CLI - [Install the SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
--   Node.js - [Install Node.js 18](https://nodejs.org/en), including the NPM package management tool.
--   Docker - [Install Docker community edition](https://hub.docker.com/search/?type=edition&offering=community)
-
-To build and deploy your application for the first time, run the following in your shell:
-
-```bash
-$ npm run build:docker
-$ npm run deploy:guided
-```
-
-The first command will build the source of your application. The second command will package and deploy your application to AWS, with a series of prompts:
-
--   **Stack Name**: The name of the stack to deploy to CloudFormation. This should be unique to your account and region, and a good starting point would be something matching your project name.
--   **AWS Region**: The AWS region you want to deploy your app to.
--   **Confirm changes before deploy**: If set to yes, any change sets will be shown to you before execution for manual review. If set to no, the AWS SAM CLI will automatically deploy application changes.
--   **Allow SAM CLI IAM role creation**: Many AWS SAM templates, including this example, create AWS IAM roles required for the AWS Lambda function(s) included to access AWS services. By default, these are scoped down to minimum required permissions. To deploy an AWS CloudFormation stack which creates or modifies IAM roles, the `CAPABILITY_IAM` value for `capabilities` must be provided. If permission isn't provided through this prompt, to deploy this example you must explicitly pass `--capabilities CAPABILITY_IAM` to the `npm run deploy` or `sam deploy` command.
--   **Save arguments to samconfig.toml**: If set to yes, your choices will be saved to a configuration file inside the project, so that in the future you can just re-run `npm run deploy` or `sam deploy` without parameters to deploy changes to your application.
-
-You can find your API Gateway Endpoint URL in the output values displayed after deployment.
-
-## Use the SAM CLI to build and test locally
+## Build and test locally
 
 Build your application with the `build:docker` command.
 
-If you prefer to use the aws `sam build` command you have to manually install the helper layer dependencies in the `bin/helpers` directory with the `npm i` command otherwise the application cannot run on your local machine, below commands are recommended commands to save your time:
+If you prefer to use the aws `sam build` command you have to manually install the helper layer dependencies in the `bin/helpers` directory with the `npm i` command otherwise the application cannot run on your local machine, below command is suggested to save your time:
 
 ```bash
 $ npm i && npm run build:docker
@@ -105,6 +85,27 @@ Events:
             Path: /v0
             Method: GET
 ```
+
+## Application deployment
+
+The Serverless Application Model Command Line Interface (SAM CLI) is an extension of the AWS CLI that adds functionality for building and testing Lambda applications. It uses Docker to run your functions in an Amazon Linux environment that matches Lambda. It can also emulate your application's build environment and API.
+
+To build and deploy your application for the first time, run the following in your shell:
+
+```bash
+$ npm run build:docker
+$ npm run deploy:guided
+```
+
+The first command will build the source of your application. The second command will package and deploy your application to AWS, with a series of prompts:
+
+-   **Stack Name**: The name of the stack to deploy to CloudFormation. This should be unique to your account and region, and a good starting point would be something matching your project name.
+-   **AWS Region**: The AWS region you want to deploy your app to.
+-   **Confirm changes before deploy**: If set to yes, any change sets will be shown to you before execution for manual review. If set to no, the AWS SAM CLI will automatically deploy application changes.
+-   **Allow SAM CLI IAM role creation**: Many AWS SAM templates, including this example, create AWS IAM roles required for the AWS Lambda function(s) included to access AWS services. By default, these are scoped down to minimum required permissions. To deploy an AWS CloudFormation stack which creates or modifies IAM roles, the `CAPABILITY_IAM` value for `capabilities` must be provided. If permission isn't provided through this prompt, to deploy this example you must explicitly pass `--capabilities CAPABILITY_IAM` to the `npm run deploy` or `sam deploy` command.
+-   **Save arguments to samconfig.toml**: If set to yes, your choices will be saved to a configuration file inside the project, so that in the future you can just re-run `npm run deploy` or `sam deploy` without parameters to deploy changes to your application.
+
+You can find your API Gateway Endpoint URL in the output values displayed after deployment.
 
 ## Fetch, tail, and filter Lambda function logs
 
