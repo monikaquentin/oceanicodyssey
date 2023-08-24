@@ -1,0 +1,99 @@
+{
+  "body": "{\r\n    \"message\": \"Hello World!\",\r\n    \"keyspec\": \"prime256v1\",\r\n    \"applicant\": \"re@redvelvet.me\",\r\n    \"exp\": \"1\"\r\n}",
+  "headers": {
+    "Accept": "*/*",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Connection": "keep-alive",
+    "Content-Length": "119",
+    "Content-Type": "application/json",
+    "Host": "127.0.0.1:3000",
+    "Postman-Token": "51804974-979d-464c-892d-f9cc85c31b4a",
+    "User-Agent": "PostmanRuntime/7.32.3",
+    "X-Forwarded-Port": "3000",
+    "X-Forwarded-Proto": "http"
+  },
+  "httpMethod": "POST",
+  "isBase64Encoded": false,
+  "multiValueHeaders": {
+    "Accept": [
+      "*/*"
+    ],
+    "Accept-Encoding": [
+      "gzip, deflate, br"
+    ],
+    "Connection": [
+      "keep-alive"
+    ],
+    "Content-Length": [
+      "119"
+    ],
+    "Content-Type": [
+      "application/json"
+    ],
+    "Host": [
+      "127.0.0.1:3000"
+    ],
+    "Postman-Token": [
+      "51804974-979d-464c-892d-f9cc85c31b4a"
+    ],
+    "User-Agent": [
+      "PostmanRuntime/7.32.3"
+    ],
+    "X-Forwarded-Port": [
+      "3000"
+    ],
+    "X-Forwarded-Proto": [
+      "http"
+    ]
+  },
+  "multiValueQueryStringParameters": {
+    "key": [
+      "value"
+    ]
+  },
+  "path": "/v0",
+  "pathParameters": null,
+  "queryStringParameters": {
+    "key": "value"
+  },
+  "requestContext": {
+    "accountId": "123456789012",
+    "apiId": "1234567890",
+    "domainName": "127.0.0.1:3000",
+    "extendedRequestId": null,
+    "httpMethod": "GET",
+    "identity": {
+      "accountId": null,
+      "apiKey": null,
+      "caller": null,
+      "cognitoAuthenticationProvider": null,
+      "cognitoAuthenticationType": null,
+      "cognitoIdentityPoolId": null,
+      "sourceIp": "127.0.0.1",
+      "user": null,
+      "userAgent": "Custom User Agent String",
+      "userArn": null
+    },
+    "path": "/v0",
+    "protocol": "HTTP/1.1",
+    "requestId": "2b43a624-0afc-499f-ad7b-c735c7c63c2a",
+    "requestTime": "17/Aug/2023:19:16:20 +0000",
+    "requestTimeEpoch": 1692299780,
+    "resourceId": "123456",
+    "resourcePath": "/v0",
+    "stage": "Prod"
+  },
+  "resource": "/v0",
+  "stageVariables": null,
+  "version": "1.0",
+  "context": {
+    "callbackWaitsForEmptyEventLoop": true,
+    "functionVersion": "$LATEST",
+    "functionName": "IndexLambda",
+    "memoryLimitInMB": "128",
+    "logGroupName": "aws/lambda/IndexLambda",
+    "logStreamName": "$LATEST",
+    "invokedFunctionArn": "arn:aws:lambda:us-east-1:012345678912:function:IndexLambda",
+    "awsRequestId": "65775a6a-1a5b-4afe-980d-36b73d768f2f"
+  }
+}

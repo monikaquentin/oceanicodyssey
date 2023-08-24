@@ -1,0 +1,175 @@
+#
+# -------------------------------------------------------------------------------
+# OceanicOdyssey © 2023 RedVelvet All Rights Reserved
+# -------------------------------------------------------------------------------
+#
+# Author : <re@redvelvet.me> (https://redvelvet.me)
+# GitHub : https://github.com/redvelvetme
+# GitLab : https://gitlab.com/redvelvetme
+#
+#
+
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+    OceanicOdyssey [NodeJS-18.x Serverless Application Model]
+    A piece from Twin Roses Back-End
+
+Globals:
+    Function:
+        Runtime: nodejs18.x
+        MemorySize: 256
+        Timeout: 128
+
+Resources:
+    KeyExecutionRole:
+        Type: AWS::IAM::Role
+        Properties:
+            RoleName: KeyExecutionRole
+            AssumeRolePolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Effect: Allow
+                      Principal:
+                          Service: lambda.amazonaws.com
+                      Action: sts:AssumeRole
+            Policies:
+                - PolicyName: KMSPermissions
+                  PolicyDocument:
+                      Version: '2012-10-17'
+                      Statement:
+                          - Effect: Allow
+                            Action:
+                                - kms:CreateAlias
+                                - kms:CreateKey
+                                - kms:DeleteAlias
+                                - kms:Describe*
+                                - kms:GenerateRandom
+                                - kms:Get*
+                                - kms:List*
+                                - kms:TagResource
+                                - kms:UntagResource
+                                - iam:ListGroups
+                                - iam:ListRoles
+                                - iam:ListUsers
+                                - kms:Sign
+                                - kms:Verify
+                                - kms:VerifyMac
+                            Resource: '*'
+
+    HelpersLayer:
+        Type: AWS::Serverless::LayerVersion
+        Properties:
+            LayerName: HelpersLayer
+            Description: Layer that will be shared across multiple microservices
+            LicenseInfo: 'Available under the MIT license.'
+            CompatibleRuntimes:
+                - nodejs18.x
+            ContentUri: bin/helpers
+
+    IndexLambda:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: bin/functions/index
+            Handler: index.lambda_handler
+            Runtime: nodejs18.x
+            Layers:
+                - !Ref HelpersLayer
+            Architectures:
+                - x86_64
+            MemorySize: 128
+            Timeout: 3
+            Description: Exposed root endpoint returns only the health state of the application
+            Events:
+                Index:
+                    Type: Api
+                    Properties:
+                        Path: /v0
+                        Method: GET
+            Role:
+
+    TrustCenterSignLambda:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: bin/functions/tc-sign
+            Handler: index.lambda_handler
+            Runtime: nodejs18.x
+            Layers:
+                - !Ref HelpersLayer
+            Architectures:
+                - x86_64
+            MemorySize: 256
+            Timeout: 32
+            Description: Function for digital key purposes
+            Events:
+                Sign:
+                    Type: Api
+                    Properties:
+                        Path: /v0/utility/tc-sign
+                        Method: POST
+            Role: !GetAtt KeyExecutionRole.Arn
+
+    TrustCenterVerifyLambda:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: bin/functions/tc-verify
+            Handler: index.lambda_handler
+            Runtime: nodejs18.x
+            Layers:
+                - !Ref HelpersLayer
+            Architectures:
+                - x86_64
+            MemorySize: 256
+            Timeout: 32
+            Description: Function for digital key purposes
+            Events:
+                Verify:
+                    Type: Api
+                    Properties:
+                        Path: /v0/utility/tc-verify
+                        Method: POST
+            Role: !GetAtt KeyExecutionRole.Arn
+
+    ApplicationResourceGroup:
+        Type: AWS::ResourceGroups::Group
+        Properties:
+            Name:
+                Fn::Sub: ApplicationInsights-SAM-${AWS::StackName}
+            ResourceQuery:
+                Type: CLOUDFORMATION_STACK_1_0
+    ApplicationInsightsMonitoring:
+        Type: AWS::ApplicationInsights::Application
+        Properties:
+            ResourceGroupName:
+                Ref: ApplicationResourceGroup
+            AutoConfigurationEnabled: 'true'
+Outputs:
+    IndexApi:
+        Description: API Gateway endpoint URL for Prod stage for Hello World function
+        Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/v0'
+    IndexLambda:
+        Description: Hello World Lambda Function ARN
+        Value: !GetAtt IndexLambda.Arn
+    IndexLambdaIamRole:
+        Description: Implicit IAM Role created for Hello World function
+        Value: !GetAtt IndexLambdaRole.Arn
+
+    TrustCenterSignLambdaEndpoint:
+        Description: 'API Gateway endpoint URL for `Prod` stage for Serverless API function'
+        Value: !Sub '[POST] https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/v0/utility/tc-sign OR https://rest-api.redvelvet.me/v0/utility/tc-sign'
+    TrustCenterSignLambda:
+        Description: 'TrustCenterSign Lambda Function ARN'
+        Value: !GetAtt TrustCenterSignLambda.Arn
+    TrustCenterSignLambdaIamRole:
+        Description: 'Implicit IAM Role created for TrustCenterSign function'
+        Value: !GetAtt KeyExecutionRole.Arn
+
+    TrustCenterVerifyLambdaEndpoint:
+        Description: 'API Gateway endpoint URL for `Prod` stage for Serverless API function'
+        Value: !Sub '[POST] https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/v0/utility/tc-verify OR https://rest-api.redvelvet.me/v0/utility/tc-verify'
+    TrustCenterVerifyLambda:
+        Description: 'TrustCenterVerify Lambda Function ARN'
+        Value: !GetAtt TrustCenterVerifyLambda.Arn
+    TrustCenterVerifyLambdaIamRole:
+        Description: 'Implicit IAM Role created for TrustCenterVerify function'
+        Value: !GetAtt KeyExecutionRole.Arn
