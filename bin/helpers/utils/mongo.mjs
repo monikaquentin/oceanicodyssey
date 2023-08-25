@@ -5,7 +5,7 @@ import * as config from '/opt/infra/global.config.mjs'
 import mongoose from 'mongoose'
 
 // Get the database configuration from the global configuration.
-const database_config = config.get('/database')
+const database_env = config.get('/database')
 
 /**
  *
@@ -25,7 +25,7 @@ export default function db_sync() {
     }
     try {
         // Attempt to connect to the MongoDB database using Mongoose.
-        mongoose.set('strictQuery', true).connect(`${database_config.uri}`, options)
+        mongoose.set('strictQuery', true).connect(`${database_env.uri}`, options)
     } catch (error) {
         // If an error occurs during the connection attempt, return an error message.
         return error.message

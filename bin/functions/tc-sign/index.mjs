@@ -33,7 +33,7 @@ export async function lambda_handler(event, context) {
     log.info(`${event.ctx} Called by ${event.caller} on ${moment(event.time)}`)
 
     // Create an instance of the TrustCenter service.
-    const service = new TrustCenter(event)
+    const service = new TrustCenter(event.time)
     try {
         // Parse the JSON body of the event.
         const body = JSON.parse(event.body)

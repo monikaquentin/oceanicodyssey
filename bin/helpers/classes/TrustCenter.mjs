@@ -12,23 +12,18 @@ import { ConflictError, InternalServerError } from '../utils/errors.mjs'
 import { KMSClient, SignCommand, VerifyCommand } from '@aws-sdk/client-kms'
 import { sha256_hash, hexb64to_bytes, validate_uuidv4 } from '../common.config.mjs'
 
-const aws_config = config.get('/aws')
+const aws_env = config.get('/aws')
 
 /**
  * The TrustCenter class is responsible for managing asymmetric signature and verification processes.
  */
 export default class TrustCenter {
-    constructor(event) {
+    constructor(epoch) {
         // Constructor for the TrustCenter class
         // Initializes various properties used within this class.
-        this.event = event
-        this.caller = this.event.requestContext.identity.sourceIp
-        this.time = this.event.requestContext.timeEpoch
-        this.kms = new KMSClient({ region: aws_config.default_region })
-        this.arn = {
-            prime256v1: aws_config.kms.prime256v1,
-            secp256k1: aws_config.kms.secp256k1
-        }
+        this.time = epoch
+        this.kms = new KMSClient({ region: aws_env.default_region })
+        this.arn = { prime256v1: aws_env.kms.prime256v1, secp256k1: aws_env.kms.secp256k1 }
         this.sign_key = ['prime256v1', 'secp256k1']
         this.message_type = 'DIGEST'
         this.signing_algorithms = 'ECDSA_SHA_256'
@@ -60,7 +55,7 @@ export default class TrustCenter {
                     SigningAlgorithm: this.signing_algorithms
                 })
             )
-            const created_at = moment(this.event.requestContext.timeEpoch)
+            const created_at = moment(this.time)
             const payload = {
                 meta_data: this.extract_meta_data(data),
                 signing_algorithm: data.SigningAlgorithm,
@@ -103,11 +98,7 @@ export default class TrustCenter {
                     SigningAlgorithm: signing_algorithm
                 })
             )
-            const isExpired =
-                expired_at !== '0000-00-00T00:00:00+00:00'
-                    ? moment(expired_at).isAfter(moment(this.event.requestContext.timeEpoch))
-                    : true
-
+            const isExpired = expired_at !== '0000-00-00T00:00:00+00:00' ? moment(expired_at).isAfter(moment(this.time)) : true
             const signatureValid = data.SignatureValid && isExpired
             const payload = {
                 meta_data: this.extract_meta_data(data),
@@ -220,10 +211,9 @@ export default class TrustCenter {
             issues_exist_data = await TCModel.findOne({ issued_id })
 
             if (!issues_exist_data) {
-                error_message = "Issue doesn't exist."
+                error_message = "Issue doesn't exist"
                 return { validation_error: wrapper.error(new ConflictError({ message: error_message })) }
             }
-
             return { validation_error, error_message, issues_exist_data }
         } catch (error) {
             return { validation_error: wrapper.error(new InternalServerError({ message: error.message })) }
