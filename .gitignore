@@ -97,6 +97,8 @@ typings/
 
 # dotenv environment variables file
 .DS_Store
+env
+env.json
 .env
 .env.json
 .env.backup

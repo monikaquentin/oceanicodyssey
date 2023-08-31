@@ -3,8 +3,12 @@
 import fs from 'fs'
 import confidence from 'confidence'
 
+import path, { dirname } from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 // Parse the environment variables from the .env.json file.
-const env = JSON.parse(fs.readFileSync('/opt/.env.json', 'utf-8'))
+const env = JSON.parse(fs.readFileSync(path.join(__dirname, '../../env.json'), 'utf-8'))
 // Define the configuration object using Confidence.
 const config = {
     aws: {

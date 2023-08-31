@@ -1,6 +1,6 @@
 'use strict'
 
-import joi from '/opt/node_modules/joi/lib/index.js'
+import joi from 'joi'
 
 // Define a validation schema using Joi for the payload object.
 const payload = joi.object({

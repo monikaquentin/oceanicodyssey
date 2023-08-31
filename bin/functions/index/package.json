@@ -2,7 +2,7 @@
     "name": "oceanic_odyssey",
     "version": "1.0.0",
     "description": "OceanicOdyssey [NodeJS-18.x Serverless Application Model] A piece from Twin Rose Back-End",
-    "main": "./bin/functions/index/index.mjs",
+    "main": "../functions/index/index.mjs",
     "type": "module",
     "private": false,
     "repository": {
@@ -29,20 +29,8 @@
         "npm": ">= 9.6.7",
         "yarn": ">= 1.22.19"
     },
-    "scripts": {
-        "lint": "prettier . --check --config .prettierrc.cjs && eslint \"**/*.{js,mjs,cjs}\"",
-        "lint:fmt": "prettier . --write --config .prettierrc.cjs",
-        "build": "sam build",
-        "build:docker": "sam build --use-container",
-        "deploy": "npm run lint && sam deploy --guided || echo \"Test fail or no changes to deploy, not deploying!\"",
-        "deploy:force": "sam deploy",
-        "delete": "sam delete --stack-name OceanicOdyssey"
-    },
-    "pre-commit": [
-        "lint:fmt"
-    ],
-    "devDependencies": {
-        "eslint": "^8.46.0",
-        "prettier": "^3.0.1"
+    "dependencies": {
+        "moment": "^2.29.4",
+        "winston": "^3.10.0"
     }
 }

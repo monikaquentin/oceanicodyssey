@@ -48,9 +48,7 @@ oceanicodyssey
 
 ## Build and test locally
 
-Build your application with the `build:docker` command.
-
-If you prefer to use the aws `sam build` command you have to manually install the helper layer dependencies in the `bin/helpers` directory with the `npm i` command otherwise the application cannot run on your local machine, below command is suggested to save your time:
+Build your application with the `build:docker` command, below command is suggested to save your time:
 
 ```bash
 $ npm i && npm run build:docker

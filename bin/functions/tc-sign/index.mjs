@@ -1,14 +1,15 @@
 'use strict'
 
 import * as sign_validation from './validation.mjs'
-import * as wrapper from '/opt/utils/wrapper.mjs'
+import * as wrapper from './helpers/utils/wrapper.mjs'
 
-import log from '/opt/utils/logger.mjs'
-import TrustCenter from '/opt/classes/TrustCenter.mjs'
-import is_valid_payload from '/opt/utils/validator.mjs'
-import moment from '/opt/node_modules/moment/moment.js'
+import moment from 'moment'
 
-import { InternalServerError, http_success, http_error } from '/opt/utils/errors.mjs'
+import log from './helpers/utils/logger.mjs'
+import TrustCenter from './helpers/classes/TrustCenter.mjs'
+import is_valid_payload from './helpers/utils/validator.mjs'
+
+import { InternalServerError, http_success, http_error } from './helpers/utils/errors.mjs'
 
 /**
  *

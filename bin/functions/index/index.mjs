@@ -1,11 +1,12 @@
 'use strict'
 
-import * as wrapper from '/opt/utils/wrapper.mjs'
+import * as wrapper from './helpers/utils/wrapper.mjs'
 
-import log from '/opt/utils/logger.mjs'
-import moment from '/opt/node_modules/moment/moment.js'
+import moment from 'moment'
 
-import { InternalServerError, http_success, http_error } from '/opt/utils/errors.mjs'
+import log from './helpers/utils/logger.mjs'
+
+import { InternalServerError, http_success, http_error } from './helpers/utils/errors.mjs'
 
 /**
  *

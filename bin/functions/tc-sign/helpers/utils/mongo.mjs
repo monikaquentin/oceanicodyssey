@@ -1,6 +1,6 @@
 'use strict'
 
-import * as config from '/opt/infra/global.config.mjs'
+import * as config from '../infra/global.config.mjs'
 
 import mongoose from 'mongoose'
 

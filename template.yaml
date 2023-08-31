@@ -57,28 +57,16 @@ Resources:
                                 - kms:VerifyMac
                             Resource: '*'
 
-    HelpersLayer:
-        Type: AWS::Serverless::LayerVersion
-        Properties:
-            LayerName: HelpersLayer
-            Description: Layer that will be shared across multiple microservices
-            LicenseInfo: 'Available under the MIT license.'
-            CompatibleRuntimes:
-                - nodejs18.x
-            ContentUri: bin/helpers
-
     IndexLambda:
         Type: AWS::Serverless::Function
         Properties:
             CodeUri: bin/functions/index
             Handler: index.lambda_handler
             Runtime: nodejs18.x
-            Layers:
-                - !Ref HelpersLayer
             Architectures:
                 - x86_64
             MemorySize: 128
-            Timeout: 3
+            Timeout: 32
             Description: Exposed root endpoint returns only the health state of the application
             Events:
                 Index:
@@ -94,12 +82,10 @@ Resources:
             CodeUri: bin/functions/tc-sign
             Handler: index.lambda_handler
             Runtime: nodejs18.x
-            Layers:
-                - !Ref HelpersLayer
             Architectures:
                 - x86_64
             MemorySize: 256
-            Timeout: 32
+            Timeout: 64
             Description: Function for digital key purposes
             Events:
                 Sign:
@@ -115,12 +101,10 @@ Resources:
             CodeUri: bin/functions/tc-verify
             Handler: index.lambda_handler
             Runtime: nodejs18.x
-            Layers:
-                - !Ref HelpersLayer
             Architectures:
                 - x86_64
             MemorySize: 256
-            Timeout: 32
+            Timeout: 64
             Description: Function for digital key purposes
             Events:
                 Verify:
