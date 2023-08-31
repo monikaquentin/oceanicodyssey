@@ -32,7 +32,7 @@
     "scripts": {
         "local:set": "cd bin/helpers && npm i",
         "lint": "prettier . --check --config .prettierrc.cjs && eslint \"**/*.{js,mjs,cjs}\"",
-        "lint:dev": "prettier . --write --config .prettierrc.cjs",
+        "lint:fmt": "prettier . --write --config .prettierrc.cjs",
         "build": "npm run local:set && sam build",
         "build:docker": "npm run local:set && sam build --use-container",
         "deploy": "npm run lint && sam deploy --guided || echo \"Test fail or no changes to deploy, not deploying!\"",
@@ -40,7 +40,7 @@
         "delete": "sam delete --stack-name OceanicOdyssey"
     },
     "pre-commit": [
-        "lint:dev"
+        "lint:fmt"
     ],
     "devDependencies": {
         "eslint": "^8.46.0",
