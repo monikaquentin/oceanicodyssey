@@ -128,18 +128,18 @@ Resources:
                 Ref: ApplicationResourceGroup
             AutoConfigurationEnabled: 'true'
 Outputs:
-    IndexApi:
-        Description: API Gateway endpoint URL for Prod stage for Hello World function
-        Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/v0'
+    IndexLambdaEndpoint:
+        Description: 'API Gateway endpoint URL for Prod stage for Index function'
+        Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/v0 OR https://rest-api.redvelvet.me/v0'
     IndexLambda:
-        Description: Hello World Lambda Function ARN
+        Description: Index Lambda Function ARN
         Value: !GetAtt IndexLambda.Arn
     IndexLambdaIamRole:
-        Description: Implicit IAM Role created for Hello World function
+        Description: Implicit IAM Role created for Index function
         Value: !GetAtt IndexLambdaRole.Arn
 
     TrustCenterSignLambdaEndpoint:
-        Description: 'API Gateway endpoint URL for `Prod` stage for Serverless API function'
+        Description: 'API Gateway endpoint URL for `Prod` stage for Sign function'
         Value: !Sub '[POST] https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/v0/utility/tc-sign OR https://rest-api.redvelvet.me/v0/utility/tc-sign'
     TrustCenterSignLambda:
         Description: 'TrustCenterSign Lambda Function ARN'
@@ -149,7 +149,7 @@ Outputs:
         Value: !GetAtt KeyExecutionRole.Arn
 
     TrustCenterVerifyLambdaEndpoint:
-        Description: 'API Gateway endpoint URL for `Prod` stage for Serverless API function'
+        Description: 'API Gateway endpoint URL for `Prod` stage for Verify function'
         Value: !Sub '[POST] https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/v0/utility/tc-verify OR https://rest-api.redvelvet.me/v0/utility/tc-verify'
     TrustCenterVerifyLambda:
         Description: 'TrustCenterVerify Lambda Function ARN'
