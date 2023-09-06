@@ -6,11 +6,12 @@ import * as wrapper from '../utils/wrapper.mjs'
 import moment from 'moment'
 
 import db_sync from '../utils/mongo.mjs'
-import TCModel from '../models/TrustCenter.model.mjs'
+import model from '../models/TrustCenter.model.mjs'
 
+import { validate as validate_uuid, version as version_uuid } from 'uuid'
+import { sha256_hash, hexb64to_bytes } from '../common.config.mjs'
 import { ConflictError, InternalServerError } from '../utils/errors.mjs'
 import { KMSClient, SignCommand, VerifyCommand } from '@aws-sdk/client-kms'
-import { sha256_hash, hexb64to_bytes, validate_uuidv4 } from '../common.config.mjs'
 
 const aws_env = config.get('/aws')
 
@@ -66,10 +67,10 @@ export default class TrustCenter {
                 created_at: created_at.format(),
                 expired_at: parseInt(exp) !== 0 ? created_at.clone().add(parseInt(exp), 'days').format() : undefined
             }
-            await TCModel.create(this.extract_issue_data(payload))
+            await model.create(this.extract_issue_data(payload))
             return wrapper.data(payload)
         } catch (error) {
-            // Handle errors from KMS or TCModel
+            // Handle errors from KMS or model
             return wrapper.error(new InternalServerError({ message: error.message }))
         }
     }
@@ -177,7 +178,7 @@ export default class TrustCenter {
     async sign_layer_validation(keyspec, message_digest) {
         // Implementation of the function for signature layer validation.
         let error_message, issues_exist_data
-        const issues_exist = await TCModel.find({ digest: { $regex: message_digest, $options: 'i' } })
+        const issues_exist = await model.find({ digest: { $regex: message_digest, $options: 'i' } })
 
         if ((issues_exist[0] && keyspec === issues_exist[0].keyspec) || issues_exist.length >= this.sign_key.length) {
             error_message = 'Message already exists, issued and signed. Extend expiration instead of creating a new issue'
@@ -203,12 +204,12 @@ export default class TrustCenter {
         let validation_error, error_message, issues_exist_data
 
         try {
-            if (!issued_id || !validate_uuidv4(issued_id)) {
+            if (!issued_id || !validate_uuid(issued_id) || version_uuid(issued_id) !== 4) {
                 error_message = 'Sorry, Issued_id is required and must be in UUIDv4 format'
                 return { validation_error: wrapper.error(new ConflictError({ message: error_message })) }
             }
 
-            issues_exist_data = await TCModel.findOne({ issued_id })
+            issues_exist_data = await model.findOne({ issued_id })
 
             if (!issues_exist_data) {
                 error_message = "Issue doesn't exist"

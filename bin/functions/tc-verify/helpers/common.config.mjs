@@ -2,6 +2,8 @@
 
 import crypto from 'crypto'
 
+import { readFileSync } from 'fs'
+
 /**
  *
  * Generate a SHA-256 hash of the given payload.
@@ -57,4 +59,30 @@ function validate_uuidv4(payload) {
     return /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(payload)
 }
 
-export { sha256_hash, hexb64to_bytes, validate_uuidv4 }
+/**
+ *
+ * Generate a random hexadecimal string of the specified size.
+ * @param {number} size - The size of the hexadecimal string to generate.
+ * @returns {string} - A random hexadecimal string of the specified size.
+ *
+ */
+function hex(size) {
+    return [...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('')
+}
+
+/**
+ *
+ * Compare the contents of two files and return true if they are identical.
+ * @param {string} file_one - The path to the first file to compare.
+ * @param {string} file_two - The path to the second file to compare.
+ * @returns {boolean} - True if the contents of the files are identical, false otherwise.
+ *
+ */
+function compare_files(file_one, file_two) {
+    const one = readFileSync(file_one, 'utf8')
+    const two = readFileSync(file_two, 'utf8')
+
+    return sha256_hash(one).toString('hex') === sha256_hash(two).toString('hex')
+}
+
+export { sha256_hash, hexb64to_bytes, validate_uuidv4, hex, compare_files }

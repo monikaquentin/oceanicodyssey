@@ -9,7 +9,6 @@ class BadRequestError {
     constructor(param = 'Bad Request') {
         this.message = param.message || param
         this.data = param.data
-        this.code = param.code
     }
 }
 
@@ -29,7 +28,6 @@ class ConflictError {
     constructor(param = 'Conflict') {
         this.message = param.message || param
         this.data = param.data
-        this.code = param.code
     }
 }
 
@@ -40,7 +38,6 @@ class ExpectationFailedError {
     constructor(param = 'Expectation Failed') {
         this.message = param.message || param
         this.data = param.data
-        this.code = param.code
     }
 }
 
@@ -51,7 +48,6 @@ class ForbiddenError {
     constructor(param = 'Forbidden') {
         this.message = param.message || param
         this.data = param.data
-        this.code = param.code
     }
 }
 
@@ -62,7 +58,6 @@ class GatewayTimeoutError {
     constructor(param = 'Gateway Timeout') {
         this.message = param.message || param
         this.data = param.data
-        this.code = param.code
     }
 }
 
@@ -73,7 +68,6 @@ class InternalServerError {
     constructor(param = 'Internal Server Error') {
         this.message = param.message || param
         this.data = param.data
-        this.code = param.code
     }
 }
 
@@ -84,7 +78,6 @@ class NotFoundError {
     constructor(param = 'Not Found') {
         this.message = param.message || param
         this.data = param.data
-        this.code = param.code
     }
 }
 
@@ -95,7 +88,6 @@ class ServiceUnavailableError {
     constructor(param = 'Service Unavailable') {
         this.message = param.message || param
         this.data = param.data
-        this.code = param.code
     }
 }
 
@@ -106,7 +98,6 @@ class UnauthorizedError {
     constructor(param = 'Unauthorized') {
         this.message = param.message || param
         this.data = param.data
-        this.code = param.code
     }
 }
 

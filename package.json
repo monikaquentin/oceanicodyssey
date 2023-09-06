@@ -32,17 +32,28 @@
     "scripts": {
         "lint": "prettier . --check --config .prettierrc.cjs && eslint \"**/*.{js,mjs,cjs}\"",
         "lint:fmt": "prettier . --write --config .prettierrc.cjs",
-        "build": "sam build",
-        "build:docker": "sam build --use-container",
-        "deploy": "npm run lint && sam deploy --guided || echo \"Test fail or no changes to deploy, not deploying!\"",
-        "deploy:force": "sam deploy",
-        "delete": "sam delete --stack-name OceanicOdyssey"
+        "test": "bash bin/tests/index.sh",
+        "test:class": "mocha --timeout 32000 \"bin/tests/classes/**/*.{test,spec}.{js,mjs}\" --exit",
+        "test:spec:sign": "mocha --timeout 32000 \"bin/tests/tc-sign/**/*.{test,spec}.{js,mjs}\" --exit",
+        "test:spec:verify": "mocha --timeout 32000 \"bin/tests/tc-verify/**/*.{test,spec}.{js,mjs}\" --exit"
     },
     "pre-commit": [
         "lint:fmt"
     ],
+    "dependencies": {
+        "@aws-sdk/client-kms": "^3.405.0",
+        "confidence": "^5.0.1",
+        "joi": "^17.10.1",
+        "moment": "^2.29.4",
+        "mongoose": "^7.5.0",
+        "uuid": "^9.0.0",
+        "winston": "^3.10.0"
+    },
     "devDependencies": {
+        "chai": "^4.3.8",
         "eslint": "^8.46.0",
-        "prettier": "^3.0.1"
+        "mocha": "^10.2.0",
+        "prettier": "^3.0.1",
+        "sinon": "^15.2.0"
     }
 }
