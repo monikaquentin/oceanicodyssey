@@ -7,54 +7,61 @@ oceanicodyssey
 ├── bin
 │   ├── events
 │   ├── functions
-│   │   ├── index
-│   └── helpers
-│       ├── classes
-│       ├── infra
-│       ├── models
-│       ├── node_modules
-│       └── utils
+│   │   ├── tc-sign
+│   │   │   └── helpers
+│   │   │       ├── classes
+│   │   │       ├── infra
+│   │   │       ├── models
+│   │   │       └── utils
+│   └── tests
 └── node_modules
 ```
 
 -   `events` - Invocation events that you can use to invoke the function.
 -   `functions` - The entry point to the logic of the function itself, main functions.
--   `index` - It must contain at least an index (entry point) and a validation file.
+-   `tc-sign` - It must contain at least an index (entry point) and a validation file.
 -   `helpers` - Helper layer which contains the core and related function services.
 -   `classes` - A help class that contains the main logic.
 -   `infra` - environment variables.
 -   `models` - Database model schema.
 -   `utils` - Contains sub-functions that act as helpers, not main functions.
+-   `tests` - Contains a collection of unit tests for main functions and helper classes.
 -   `node_modules` - Directory where Node.js stores all packages (libraries or modules).
 
 The application uses several AWS resources, including Lambda functions and an API Gateway API. These resources are defined in the `template.yaml` file in this project. You can update the template to add AWS resources through the same deployment process that updates your application code.
 
-Don't forget to create a new customized `.env.json` file from a copy of the `.env.example.json` file in the directory:
+Don't forget to create a new customized `.env` file from a copy of the `.env.example` file in the directory:
 
 ```
 oceanicodyssey
 ├── bin
-│   └── helpers
-│       ├── .env.example.json
-│       ├── .env.json
+│   ├── functions
+│   │   ├── tc-sign
+│   │   │   ├── .env
+│   │   │   └── .env.example
+│   │   └── tc-verify
+│   │       ├── .env
+│   │       └── .env.example
+├── .env
+└── .env.example
 ```
 
 ## Requirements
 
 -   [AWS CLI](https://aws.amazon.com/cli) already configured with Administrator permission.
 -   [SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html) installed - minimum `v1.94.0` (sam --version).
--   [NodeJS](https://nodejs.org/en) `>= v18.17.1`, including the NPM package management tool `>= v9.8.1`.
+-   [NodeJS](https://nodejs.org/en) `>= v18.17.1`, including the NPM package management tool `>= v9.6.7`.
 -   [Docker](https://hub.docker.com/search/?type=edition&offering=community) - Community Edition.
 
 ## Build and test locally
 
-Build your application with the `build:docker` command, below command is suggested to save your time:
+Build your application with the `sam build --use-container` command, below command is suggested to save your time:
 
 ```bash
-$ npm i && npm run build:docker
+$ npm i && sam build --use-container
 ```
 
-You can also use `npm run build` only (no docker container).
+You can also use `sam build` only (no docker container).
 
 The SAM CLI installs dependencies defined in `package.json`, creates a deployment package, and saves it in the `.aws-sam/build` folder.
 
@@ -93,8 +100,8 @@ The Serverless Application Model Command Line Interface (SAM CLI) is an extensio
 To build and deploy your application for the first time, run the following in your shell:
 
 ```bash
-$ npm run build:docker
-$ npm run deploy:guided
+$ sam build --use-container
+$ sam deploy --guided
 ```
 
 The first command will build the source of your application. The second command will package and deploy your application to AWS, with a series of prompts:
@@ -122,12 +129,6 @@ You can find more information and examples about filtering Lambda function logs 
 ## Cleanup
 
 To delete the sample application that you created, use the AWS CLI. Assuming you used your project name for the stack name, you can run the following:
-
-```bash
-$ npm run delete
-```
-
-OR
 
 ```bash
 $ sam delete --stack-name OceanicOdyssey
